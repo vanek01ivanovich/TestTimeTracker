@@ -8,7 +8,7 @@ public class TimeTrackerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TimeTrackerApplication.class, args);
-		System.out.println("test");
+		System.out.println("tesst");
 	}
 
 
