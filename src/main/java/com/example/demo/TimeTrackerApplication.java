@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TimeTrackerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TimeTrackerApplication.class, args);
-		System.out.println("tesst");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TimeTrackerApplication.class, args);
 
+
+    }
 
 }
