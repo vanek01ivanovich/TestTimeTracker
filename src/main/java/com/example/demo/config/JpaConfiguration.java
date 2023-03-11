@@ -1,19 +1,20 @@
 package com.example.demo.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
+@EnableJpaRepositories("com.example.demo.persistence")
 public class JpaConfiguration {
 
     @Value("${spring.datasource.driver-class-name}")
@@ -30,7 +31,7 @@ public class JpaConfiguration {
 
     @Bean
     //@ConfigurationProperties(prefix = "spring.datasource") todo check how to implement
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         return DataSourceBuilder.create()
                 .driverClassName(driverClassName)
                 .url(url)
@@ -40,8 +41,8 @@ public class JpaConfiguration {
     }
 
     @Bean
-    public JpaVendorAdapter jpaVendorAdapter(){
-        HibernateJpaVendorAdapter jpaVendorAdapter= new HibernateJpaVendorAdapter();
+    public JpaVendorAdapter jpaVendorAdapter() {
+        HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setDatabase(Database.POSTGRESQL);
         jpaVendorAdapter.setGenerateDdl(true);
         jpaVendorAdapter.setShowSql(true);
@@ -49,12 +50,18 @@ public class JpaConfiguration {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter){
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactoryBean.setPersistenceUnitName("basicEntities");
         entityManagerFactoryBean.setPackagesToScan("com.example.demo.data.entity");
+
+        final Properties properties = new Properties();
+        properties.setProperty("hibernate.format_sql", "true");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        entityManagerFactoryBean.setJpaProperties(properties);
+
         return entityManagerFactoryBean;
     }
 

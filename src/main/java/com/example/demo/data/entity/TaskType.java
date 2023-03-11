@@ -3,13 +3,12 @@ package com.example.demo.data.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "project")
-public class Project {
+@Table(name = "task_type")
+public class TaskType {
 
     @Id
     @GeneratedValue
@@ -18,10 +17,6 @@ public class Project {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "budget")
-    private Integer budget;
-
-    @OneToMany(mappedBy = "project")
-    private List<Task> tasks;
-
+    @OneToOne(mappedBy = "taskType")
+    private Task task;
 }
