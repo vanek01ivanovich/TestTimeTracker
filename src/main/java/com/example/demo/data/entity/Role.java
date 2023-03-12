@@ -1,5 +1,6 @@
 package com.example.demo.data.entity;
 
+import com.example.demo.data.enums.ERole;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,8 +15,9 @@ public class Role {
     @GeneratedValue
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "name")
-    private String name;
+    private ERole name;
 
     @OneToOne(mappedBy = "role")
     private User user;

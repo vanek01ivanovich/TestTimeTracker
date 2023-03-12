@@ -1,4 +1,4 @@
 package com.example.demo.web.controller;
 
-public class AuthorizationController {
+public class AuthController {
 }
