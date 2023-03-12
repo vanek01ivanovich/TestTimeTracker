@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.config.transaction;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
