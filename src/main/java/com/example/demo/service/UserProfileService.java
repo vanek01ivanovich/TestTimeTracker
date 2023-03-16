@@ -2,8 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.data.entity.User;
 
-public interface UserService {
+public interface UserProfileService {
 
-    void createUser(User user);
-
+    void createUserProfile(User user);
 }

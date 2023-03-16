@@ -1,14 +1,19 @@
 package com.example.demo.data.entity;
 
 import com.example.demo.data.enums.ERole;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
-@Table(name = "role")
+@Builder
+@Getter
+@Setter
+@Table(name = "ROLE")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
 
     @Id
@@ -19,6 +24,15 @@ public class Role {
     @Column(name = "name")
     private ERole name;
 
-    @OneToOne(mappedBy = "role")
-    private User user;
+    @OneToMany(mappedBy = "role")
+    private List<User> user;
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name=" + name +
+                ", user=" + user +
+                '}';
+    }
 }

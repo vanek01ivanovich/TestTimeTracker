@@ -33,8 +33,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("doFilterInternal request {}", request.getHeader("Authorization"));
         try {
             String jwtToken = jwtTokenProvider.parseToken(request);
+            log.info("jwtToken {}", jwtToken);
             if (StringUtils.hasText(jwtToken) && jwtTokenProvider.validateToken(jwtToken)) {
                 String userNameFromJwtToken = jwtTokenProvider.getUserNameFromJwtToken(jwtToken);
                 if (StringUtils.hasText(userNameFromJwtToken)) {
@@ -48,7 +50,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception ex) {
-            log.error("Could not set user authentication in security context " , ex);
+            log.error("Could not set user authentication in security context ", ex);
         }
 
         filterChain.doFilter(request, response);

@@ -1,15 +1,19 @@
 package com.example.demo.data.entity;
 
 import com.example.demo.data.enums.Position;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "user_profile")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserProfile {
 
     @Id
@@ -19,6 +23,7 @@ public class UserProfile {
     @Column(name = "about_me")
     private String aboutMe;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "position")
     private Position position;
 

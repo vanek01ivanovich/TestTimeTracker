@@ -1,5 +1,6 @@
 package com.example.demo.data.entity;
 
+import com.example.demo.data.enums.ELanguage;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,7 +17,8 @@ public class Language {
     private UUID id;
 
     @Column(name = "name")
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private ELanguage name;
 
     @ManyToMany(mappedBy = "languages")
     private Set<UserProfile> userProfiles;

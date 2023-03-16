@@ -4,6 +4,7 @@ import com.example.demo.data.entity.User;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -48,13 +50,13 @@ public class JwtTokenProvider {
         return false;
     }
 
-    public String generateAccessToken(User user) {
+    public String generateAccessToken(JwtUser user) {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());
         claims.put("username", user.getUsername());
         claims.put("email", user.getEmail());
-        claims.put("role", user.getRole().toString());
+        claims.put("role", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()));
 
         return Jwts.builder()
                 .setSubject(user.getId().toString())

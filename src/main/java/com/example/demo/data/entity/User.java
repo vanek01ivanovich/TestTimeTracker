@@ -1,7 +1,8 @@
 package com.example.demo.data.entity;
 
 
-import lombok.Data;
+import com.sun.istack.internal.NotNull;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,8 +10,14 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Data
-@Table(name = "users")
+@Builder
+@Setter
+@Getter
+@Table(name = "users",
+        uniqueConstraints =
+        @UniqueConstraint(columnNames = {"email", "username"}))
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -18,22 +25,28 @@ public class User {
     private UUID id;
 
     @Column(name = "email")
+    @NotNull
     private String email;
 
     @Column(name = "first_name")
+    @NotNull
     private String firstName;
 
     @Column(name = "last_name")
+    @NotNull
     private String lastName;
 
     @Column(name = "password")
+    @NotNull
     private String password;
 
     @Column(name = "username")
+    @NotNull
     private String username;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
+    @NotNull
     private Role role;
 
     @OneToMany(mappedBy = "user")

@@ -7,6 +7,7 @@ import com.example.demo.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -62,7 +63,18 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.
+
+        httpSecurity.csrf().disable()
+                .authorizeRequests().antMatchers("/api/login","/api/signup").
+                permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
+                .permitAll().
+                anyRequest().authenticated().and().
+                // make sure we use stateless session; session won't be used to
+                // store user's state.
+                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        /*httpSecurity.
                  httpBasic().disable()// off httpBasic
                 .csrf().disable()     // off csrf
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)// add Exception Handler
@@ -70,15 +82,21 @@ public class SecurityConfiguration {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // without session
                 .and()
-                .authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .authorizeRequests()//.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/").permitAll()
                 .anyRequest().authenticated()//other URLS only authenticated( with token)
-                .and()
-                .anonymous()
                 .and()
                 .cors()
                 .and()
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);*/
+
+/*        httpSecurity.antMatcher("/**")
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/").permitAll()
+                .anyRequest().authenticated();*/
 
         return httpSecurity.build();
     }
