@@ -51,12 +51,12 @@ public class JwtUser implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     public static JwtUser build(User user) {
@@ -64,6 +64,7 @@ public class JwtUser implements UserDetails {
                 .id(user.getId())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
+                .username(user.getUsername())
                 .lastName(user.getLastName())
                 .password(user.getPassword())
                 .authorities(Stream.of(new SimpleGrantedAuthority(user.getRole().toString())).collect(Collectors.toList()))
@@ -72,7 +73,7 @@ public class JwtUser implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override

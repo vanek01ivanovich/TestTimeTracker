@@ -2,6 +2,7 @@ package com.example.demo.data.entity;
 
 import com.sun.istack.internal.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
         @UniqueConstraint(columnNames = {"name"}))
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Project {
 
     @Id

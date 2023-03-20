@@ -51,7 +51,7 @@ public class JwtTokenProvider {
     }
 
     public String generateAccessToken(JwtUser user) {
-
+        log.info("generateAccessToken - {}", user.toString());
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId());
         claims.put("username", user.getUsername());

@@ -2,10 +2,12 @@ package com.example.demo.data.entity;
 
 import com.sun.istack.internal.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +15,7 @@ import java.util.UUID;
 @Table(name = "task")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Task {
 
     @Id
@@ -22,6 +25,10 @@ public class Task {
     @Column(name = "name")
     @NotNull
     private String name;
+
+    @Column(name = "created_when")
+    @NotNull
+    private Date createdWhen;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

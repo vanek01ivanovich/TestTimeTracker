@@ -3,11 +3,10 @@ package com.example.demo.config.security;
 import com.example.demo.config.token.AuthTokenFilter;
 import com.example.demo.config.token.JwtAuthenticationEntryPoint;
 import com.example.demo.config.token.JwtTokenProvider;
-import com.example.demo.service.JwtUserDetailsService;
+import com.example.demo.service.impl.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -18,7 +17,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -64,7 +62,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.csrf().disable()
+/*        httpSecurity.csrf().disable()
                 .authorizeRequests().antMatchers("/api/login","/api/signup").
                 permitAll().antMatchers(HttpMethod.OPTIONS, "/**")
                 .permitAll().
@@ -72,10 +70,11 @@ public class SecurityConfiguration {
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
 
-        /*httpSecurity.
-                 httpBasic().disable()// off httpBasic
+/*        httpSecurity.
+                 httpBasic()
+                .and()// off httpBasic
                 .csrf().disable()     // off csrf
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)// add Exception Handler
                 .and()
@@ -84,13 +83,26 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()//.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/").permitAll()
+                .antMatchers("/api").permitAll()
                 .anyRequest().authenticated()//other URLS only authenticated( with token)
                 .and()
                 .cors()
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);*/
+
+        httpSecurity
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/api/login","/api/signup").permitAll()
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        httpSecurity.cors();
+        httpSecurity.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 /*        httpSecurity.antMatcher("/**")
                 .authorizeRequests()

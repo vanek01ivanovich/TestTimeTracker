@@ -5,4 +5,6 @@ import com.example.demo.data.entity.User;
 public interface UserProfileService {
 
     void createUserProfile(User user);
+
+    void deleteUserProfile(User user);
 }

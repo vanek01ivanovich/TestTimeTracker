@@ -1,6 +1,7 @@
 package com.example.demo.data.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.internal.NotNull;
 import lombok.*;
 
@@ -44,17 +45,21 @@ public class User {
     @NotNull
     private String username;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @NotNull
     private Role role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
 
-    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserProfile userProfile;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "user_grants",

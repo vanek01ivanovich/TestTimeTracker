@@ -60,7 +60,9 @@ public class AuthController {
         AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
                 .token(token)
                 .role(role)
+                .username(user.getUsername())
                 .build();
+        log.info(authenticationResponse.toString());
         return new ResponseEntity<>(authenticationResponse, HttpStatus.OK);
     }
 

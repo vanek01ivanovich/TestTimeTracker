@@ -54,4 +54,9 @@ public class UserProfileServiceImpl implements UserProfileService {
             log.error(exception.getMessage());
         }
     }
+
+    @Override
+    public void deleteUserProfile(User user) {
+
+    }
 }
