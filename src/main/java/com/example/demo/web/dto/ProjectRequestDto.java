@@ -4,7 +4,7 @@ import com.example.demo.data.entity.Project;
 import lombok.Data;
 
 @Data
-public class ProjectCreateDto {
+public class ProjectRequestDto {
     private String name;
 
     private Integer budget;

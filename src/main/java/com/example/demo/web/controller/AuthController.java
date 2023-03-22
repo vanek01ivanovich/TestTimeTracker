@@ -2,8 +2,10 @@ package com.example.demo.web.controller;
 
 import com.example.demo.config.token.JwtTokenProvider;
 import com.example.demo.config.token.JwtUser;
+import com.example.demo.data.entity.User;
 import com.example.demo.service.UserProfileService;
 import com.example.demo.service.UserService;
+import com.example.demo.service.facade.CreateUserFacade;
 import com.example.demo.web.dto.LoginUserDto;
 import com.example.demo.web.dto.UserCreateDto;
 import com.example.demo.web.response.AuthenticationResponse;
@@ -25,13 +27,13 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
+    private final CreateUserFacade createUserFacade;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, CreateUserFacade createUserFacade) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
+        this.createUserFacade = createUserFacade;
     }
 
 
@@ -68,9 +70,10 @@ public class AuthController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public void signup(@RequestBody UserCreateDto request) {
-        log.info("signup {} ", request.toString());
-        userService.createUser(request.toUserEntity());
+    public void signup(@RequestBody UserCreateDto userCreateDto) {
+        log.info("signup {} ", userCreateDto.toString());
+        User userForCreation = createUserFacade.representUserForCreation(userCreateDto);
+        createUserFacade.createUser(userForCreation);
     }
 
 }

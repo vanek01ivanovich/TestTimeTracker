@@ -16,6 +16,8 @@ public class UserCreateDto {
 
     private String password;
 
+    private String roleName;
+
     public User toUserEntity(){
         return User.builder()
                 .username(username)

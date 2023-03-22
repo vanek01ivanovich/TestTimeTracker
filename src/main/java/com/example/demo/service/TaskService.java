@@ -2,13 +2,13 @@ package com.example.demo.service;
 
 import com.example.demo.data.entity.Project;
 import com.example.demo.data.entity.Task;
-import com.example.demo.web.dto.TaskCreateDto;
+import com.example.demo.web.dto.TaskCreateRequestDto;
 
 import java.util.List;
 
 public interface TaskService {
 
-    void createTask(TaskCreateDto taskCreateDto);
+    void createTask(Task task);
 
     void deleteTask(Task task);
 

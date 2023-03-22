@@ -40,7 +40,7 @@ public class Task {
     @NotNull
     private Project project;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id")
     @NotNull
     private TaskType taskType;

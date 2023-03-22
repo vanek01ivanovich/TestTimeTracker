@@ -4,21 +4,18 @@ import com.example.demo.data.entity.User;
 import com.example.demo.data.enums.ERole;
 import com.example.demo.persistence.repository.RoleRepository;
 import com.example.demo.persistence.repository.UserRepository;
-import com.example.demo.service.UserProfileService;
 import com.example.demo.service.UserService;
 import com.example.demo.web.dto.AllUsersDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -29,25 +26,20 @@ public class UserServiceImpl implements UserService {
 
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final UserProfileService userProfileService;
+/*    private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;*/
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository,
+    public UserServiceImpl(UserRepository userRepository/*,
                            BCryptPasswordEncoder bCryptPasswordEncoder,
-                           RoleRepository roleRepository,
-                           UserProfileService userProfileService) {
+                           RoleRepository roleRepository*/) {
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.roleRepository = roleRepository;
-        this.userProfileService = userProfileService;
     }
 
     @Override
     @Transactional
-    public void createUser(User user) {
-        User newUser = User.builder()
+    public User createUser(User user) {
+        /*User newUser = User.builder()
                 .password(bCryptPasswordEncoder.encode(user.getPassword()))
                 .lastName(user.getLastName())
                 .firstName(user.getFirstName())
@@ -55,14 +47,16 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .role(roleRepository.findByName(ERole.ROLE_USER)
                         .orElseThrow(() -> new RuntimeException("No Such Role")))
-                .build();
+                .build();*/
         try {
-            User createdUser = userRepository.saveAndFlush(newUser);
-            userProfileService.createUserProfile(createdUser);
-        }catch (Exception exception){
+            User createdUser = userRepository.saveAndFlush(user);
+            //userProfileService.createUserProfile(createdUser);
+            log.info("createUser done");
+            return createdUser;
+        } catch (Exception exception) {
             exception.printStackTrace();
+            throw new RuntimeException("User wasn`t created");
         }
-        log.info("createUser done");
     }
 
     @Override
@@ -85,7 +79,7 @@ public class UserServiceImpl implements UserService {
         log.info("deleteUserById userToDelete with id {}", userToDelete.getId());
         try {
             userRepository.deleteById(UUID.fromString(id));
-        }catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
         log.info("deleteUserById done");

@@ -17,12 +17,12 @@ import java.util.UUID;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final TaskService taskService;
+    /*private final TaskService taskService;*/
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository, TaskService taskService) {
+    public ProjectServiceImpl(ProjectRepository projectRepository/*, TaskService taskService*/) {
         this.projectRepository = projectRepository;
-        this.taskService = taskService;
+        /*this.taskService = taskService;*/
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void deleteProject(Project project) {
-        taskService.deleteAllTasksByProject(project);
+        /*taskService.deleteAllTasksByProject(project);*/
         projectRepository.delete(project);
     }
 
@@ -42,7 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProjectById(String id) {
         Project projectToDelete = projectRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new RuntimeException("Project is not found with id " + id));
-        taskService.deleteAllTasksByProject(projectToDelete);
+        /*taskService.deleteAllTasksByProject(projectToDelete);*/
         projectRepository.deleteById(UUID.fromString(id));
     }
 

@@ -6,4 +6,5 @@ public interface TaskTypeService {
 
     void createTaskType(String taskType);
 
+    TaskType findTaskTypeByNameOrCreateNew(String name);
 }
