@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -24,6 +25,12 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public void createTask(Task task) {
         taskRepository.save(task);
+    }
+
+    @Override
+    public Task findTaskById(String id) {
+        return taskRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new RuntimeException("Task is not found with ID {}" + id));
     }
 
     @Override
@@ -54,5 +61,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteAllTasksByProject(Project project) {
 
+    }
+
+    @Override
+    @Transactional
+    public void assignTaskToUser(String userId, String taskId) {
+        taskRepository.assignTaskForUser(UUID.fromString(userId), UUID.fromString(taskId));
     }
 }

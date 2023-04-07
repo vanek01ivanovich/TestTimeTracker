@@ -1,7 +1,9 @@
 package com.example.demo.data.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Data
 @Builder
 @Table(name = "task_type")
+@AllArgsConstructor
+@NoArgsConstructor
 public class TaskType {
 
     @Id

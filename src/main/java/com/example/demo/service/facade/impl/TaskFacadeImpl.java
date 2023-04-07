@@ -7,11 +7,13 @@ import com.example.demo.service.TaskTypeService;
 import com.example.demo.service.UserService;
 import com.example.demo.service.facade.TaskFacade;
 import com.example.demo.web.dto.TaskCreateRequestDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class TaskFacadeImpl implements TaskFacade {
 
     private final TaskTypeService taskTypeService;
@@ -40,6 +42,7 @@ public class TaskFacadeImpl implements TaskFacade {
                 .project(projectService.getProjectById(taskCreateRequest.getProjectId()))
                 .taskType(taskTypeService.findTaskTypeByNameOrCreateNew(taskCreateRequest.getTaskTypeName()))
                 .build();
+        log.info("createTask with taskToCreate {}", taskToCreate);
         taskService.createTask(taskToCreate);
     }
 }

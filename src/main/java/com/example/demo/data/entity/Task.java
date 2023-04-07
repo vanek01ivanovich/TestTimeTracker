@@ -1,17 +1,15 @@
 package com.example.demo.data.entity;
 
 import com.sun.istack.internal.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "task")
 @NoArgsConstructor
 @AllArgsConstructor

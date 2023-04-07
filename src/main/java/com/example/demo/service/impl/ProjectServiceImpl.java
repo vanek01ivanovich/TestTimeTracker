@@ -40,8 +40,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void deleteProjectById(String id) {
-        Project projectToDelete = projectRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new RuntimeException("Project is not found with id " + id));
+       /* Project projectToDelete = projectRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new RuntimeException("Project is not found with id " + id));*/
         /*taskService.deleteAllTasksByProject(projectToDelete);*/
         projectRepository.deleteById(UUID.fromString(id));
     }
@@ -58,6 +58,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project getProjectById(String id) {
-        return null;
+        return projectRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new RuntimeException("Task is not found with ID " + id));
     }
 }

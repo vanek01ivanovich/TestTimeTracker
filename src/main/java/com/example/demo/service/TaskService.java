@@ -10,6 +10,8 @@ public interface TaskService {
 
     void createTask(Task task);
 
+    Task findTaskById(String id);
+
     void deleteTask(Task task);
 
     void deleteTaskById(String id);
@@ -21,4 +23,6 @@ public interface TaskService {
     List<Task> getAllTasks();
 
     void deleteAllTasksByProject(Project project);
+
+    void assignTaskToUser(String userId, String taskId);
 }

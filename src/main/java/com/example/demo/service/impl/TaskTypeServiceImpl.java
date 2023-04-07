@@ -17,15 +17,15 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     }
 
     @Override
-    public void createTaskType(String taskType) {
-
+    public TaskType createTaskType(String taskType) {
+        return taskTypeRepository.save(TaskType.builder()
+                .name(taskType)
+                .build());
     }
 
     @Override
     public TaskType findTaskTypeByNameOrCreateNew(String name) {
         return taskTypeRepository.findByName(name)
-                .orElse(taskTypeRepository.save(TaskType.builder()
-                        .name(name)
-                        .build()));
+                .orElseGet(() -> createTaskType(name));
     }
 }
