@@ -4,7 +4,7 @@ import com.example.demo.data.entity.User;
 import lombok.Data;
 
 @Data
-public class UserCreateDto {
+public class UserDto {
 
     private String username;
 

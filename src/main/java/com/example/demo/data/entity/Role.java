@@ -1,6 +1,7 @@
 package com.example.demo.data.entity;
 
 import com.example.demo.data.enums.ERole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Role {
     private ERole name;
 
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private List<User> user;
 
     @Override

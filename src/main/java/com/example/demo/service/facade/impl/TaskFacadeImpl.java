@@ -1,12 +1,10 @@
 package com.example.demo.service.facade.impl;
 
 import com.example.demo.data.entity.Task;
-import com.example.demo.service.ProjectService;
-import com.example.demo.service.TaskService;
-import com.example.demo.service.TaskTypeService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.*;
 import com.example.demo.service.facade.TaskFacade;
 import com.example.demo.web.dto.TaskCreateRequestDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,23 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class TaskFacadeImpl implements TaskFacade {
 
     private final TaskTypeService taskTypeService;
     private final TaskService taskService;
     private final UserService userService;
     private final ProjectService projectService;
-
-    @Autowired
-    public TaskFacadeImpl(TaskTypeService taskTypeService,
-                          TaskService taskService,
-                          UserService userService,
-                          ProjectService projectService) {
-        this.taskTypeService = taskTypeService;
-        this.taskService = taskService;
-        this.userService = userService;
-        this.projectService = projectService;
-    }
+    private final TaskTrackerService taskTrackerService;
 
     @Override
     @Transactional
@@ -43,6 +32,8 @@ public class TaskFacadeImpl implements TaskFacade {
                 .taskType(taskTypeService.findTaskTypeByNameOrCreateNew(taskCreateRequest.getTaskTypeName()))
                 .build();
         log.info("createTask with taskToCreate {}", taskToCreate);
-        taskService.createTask(taskToCreate);
+        Task createdTask = taskService.createTask(taskToCreate);
+        log.info("created task {}", createdTask);
+        taskTrackerService.createTaskTracker(createdTask);
     }
 }

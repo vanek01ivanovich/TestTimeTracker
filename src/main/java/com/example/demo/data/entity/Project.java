@@ -1,10 +1,8 @@
 package com.example.demo.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.internal.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = {"tasks"})
 public class Project {
 
     @Id
@@ -32,7 +31,8 @@ public class Project {
     @NotNull
     private Integer budget;
 
-    @OneToMany(mappedBy = "project")
+    @JsonIgnore
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private List<Task> tasks;
 
 }

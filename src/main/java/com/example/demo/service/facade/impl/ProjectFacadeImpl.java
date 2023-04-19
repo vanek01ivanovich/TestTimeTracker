@@ -27,7 +27,7 @@ public class ProjectFacadeImpl implements ProjectFacade {
     @Transactional
     public void deleteProject(String id) {
         Project projectById = projectService.getProjectById(id);
-        taskService.deleteAllTasksByProject(projectById);
+        taskService.deleteAllTasksByProject(id);
         projectService.deleteProject(projectById);
     }
 

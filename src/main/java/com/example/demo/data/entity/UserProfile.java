@@ -1,6 +1,7 @@
 package com.example.demo.data.entity;
 
 import com.example.demo.data.enums.Position;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,12 +31,14 @@ public class UserProfile {
     @Column(name = "age")
     private Integer age;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id")
     @MapsId
     private User user;
 
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_profile_languages",
             joinColumns = @JoinColumn(name = "user_profile_id", referencedColumnName = "id"),

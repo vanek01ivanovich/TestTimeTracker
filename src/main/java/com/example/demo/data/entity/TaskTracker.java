@@ -21,7 +21,6 @@ public class TaskTracker {
     private UUID id;
 
     @Column(name = "started_when")
-    @NotNull
     private Date startedWhen;
 
     @Column(name = "finished_when")

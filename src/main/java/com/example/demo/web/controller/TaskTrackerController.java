@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/task-track")
+@RequestMapping("/tasks/trackers")
 public class TaskTrackerController {
 
     private final TaskTrackerService taskTrackerService;
@@ -16,13 +16,13 @@ public class TaskTrackerController {
         this.taskTrackerService = taskTrackerService;
     }
 
-    @PostMapping("/start-task/{id}")
+    @PatchMapping("/start/{id}")
     public void startTask(@PathVariable String id){
         taskTrackerService.startTask(id);
     }
 
-    @PatchMapping("/finish-task/{id}")
+    @PatchMapping("/finish/{id}")
     public void finishTask(@PathVariable String id){
-
+        taskTrackerService.finishTask(id);
     }
 }

@@ -2,9 +2,11 @@ package com.example.demo.service;
 
 import com.example.demo.data.entity.User;
 import com.example.demo.web.dto.AllUsersDto;
+import com.example.demo.web.dto.UserDto;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
 
@@ -14,7 +16,7 @@ public interface UserService {
 
     void deleteUserById(String id);
 
-    void updateUser(User user);
+    void updateUser(UUID id, UserDto userDto);
 
     User getUserByUserName(String username);
 

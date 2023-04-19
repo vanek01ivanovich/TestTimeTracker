@@ -1,14 +1,15 @@
 package com.example.demo.service;
 
-import com.example.demo.data.entity.Project;
 import com.example.demo.data.entity.Task;
-import com.example.demo.web.dto.TaskCreateRequestDto;
+import com.example.demo.data.entity.TaskType;
+import com.example.demo.web.dto.TaskActivityDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface TaskService {
 
-    void createTask(Task task);
+    Task createTask(Task task);
 
     Task findTaskById(String id);
 
@@ -18,11 +19,26 @@ public interface TaskService {
 
     void deleteAllTAsks();
 
+    void deleteAllTAsksByStatus(String status);
+
     void updateTask(Task task);
+
+    void updateStatus(String id, String status);
 
     List<Task> getAllTasks();
 
-    void deleteAllTasksByProject(Project project);
+    void deleteAllTasksByProject(String project);
 
-    void assignTaskToUser(String userId, String taskId);
+    void assignTaskToUser(String taskId, String userId);
+
+    void deleteUserFromTask(String taskId);
+
+    List<TaskActivityDto> findAllByStatusAndUser(String status, String userId);
+
+    List<TaskActivityDto> findAllByStatus(String status);
+
+    List<Task> findAllByUser(String userId);
+
+    void updateTaskType(String taskId, TaskType taskType);
+
 }

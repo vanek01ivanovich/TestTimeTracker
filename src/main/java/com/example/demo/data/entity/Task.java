@@ -1,5 +1,6 @@
 package com.example.demo.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.internal.NotNull;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = {"user", "project", "taskType", "taskTracker"})
 public class Task {
 
     @Id
@@ -28,22 +30,32 @@ public class Task {
     @NotNull
     private Date createdWhen;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @NotNull
     private User user;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", referencedColumnName = "id")
     @NotNull
     private Project project;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id", referencedColumnName = "id")
     @NotNull
     private TaskType taskType;
 
-    @OneToOne(mappedBy = "task")
+    @JsonIgnore
+    @OneToOne(mappedBy = "task", cascade = CascadeType.ALL)
     private TaskTracker taskTracker;
+
+    public void setTaskTracker(TaskTracker taskTracker) {
+        taskTracker.setTask(this);
+        this.taskTracker = taskTracker;
+    }
+
 
 }

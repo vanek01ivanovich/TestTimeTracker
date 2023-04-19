@@ -2,10 +2,12 @@ package com.example.demo.data.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.internal.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -19,6 +21,7 @@ import java.util.UUID;
         @UniqueConstraint(columnNames = {"email", "username"}))
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"role","tasks","userProfile", "grants"})
 public class User {
 
     @Id

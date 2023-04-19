@@ -5,13 +5,15 @@ import com.example.demo.service.RoleService;
 import com.example.demo.service.UserProfileService;
 import com.example.demo.service.UserService;
 import com.example.demo.service.facade.CreateUserFacade;
-import com.example.demo.web.dto.UserCreateDto;
+import com.example.demo.web.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class CreateUserFacadeImpl implements CreateUserFacade {
 
     private final UserService userService;
@@ -19,16 +21,6 @@ public class CreateUserFacadeImpl implements CreateUserFacade {
     private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public CreateUserFacadeImpl(UserService userService,
-                                UserProfileService userProfileService,
-                                BCryptPasswordEncoder bCryptPasswordEncoder,
-                                RoleService roleService) {
-        this.userService = userService;
-        this.userProfileService = userProfileService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.roleService = roleService;
-    }
 
     @Override
     @Transactional
@@ -38,14 +30,14 @@ public class CreateUserFacadeImpl implements CreateUserFacade {
     }
 
     @Override
-    public User representUserForCreation(UserCreateDto userCreateDto) {
+    public User representUserForCreation(UserDto userDto) {
         return User.builder()
-                .password(bCryptPasswordEncoder.encode(userCreateDto.getPassword()))
-                .lastName(userCreateDto.getLastName())
-                .firstName(userCreateDto.getFirstName())
-                .username(userCreateDto.getUsername())
-                .email(userCreateDto.getEmail())
-                .role(roleService.findRoleByName(userCreateDto.getRoleName()))
+                .password(bCryptPasswordEncoder.encode(userDto.getPassword()))
+                .lastName(userDto.getLastName())
+                .firstName(userDto.getFirstName())
+                .username(userDto.getUsername())
+                .email(userDto.getEmail())
+                .role(roleService.findRoleByName(userDto.getRoleName()))
                 .build();
     }
 }

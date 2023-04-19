@@ -1,17 +1,17 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.data.entity.User;
-import com.example.demo.data.enums.ERole;
-import com.example.demo.persistence.repository.RoleRepository;
 import com.example.demo.persistence.repository.UserRepository;
+import com.example.demo.service.UserProfileService;
 import com.example.demo.service.UserService;
 import com.example.demo.web.dto.AllUsersDto;
+import com.example.demo.web.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,35 +22,16 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-
     private final UserRepository userRepository;
-/*    private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;*/
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository/*,
-                           BCryptPasswordEncoder bCryptPasswordEncoder,
-                           RoleRepository roleRepository*/) {
-        this.userRepository = userRepository;
-    }
 
     @Override
-    @Transactional
     public User createUser(User user) {
-        /*User newUser = User.builder()
-                .password(bCryptPasswordEncoder.encode(user.getPassword()))
-                .lastName(user.getLastName())
-                .firstName(user.getFirstName())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(roleRepository.findByName(ERole.ROLE_USER)
-                        .orElseThrow(() -> new RuntimeException("No Such Role")))
-                .build();*/
         try {
             User createdUser = userRepository.saveAndFlush(user);
-            //userProfileService.createUserProfile(createdUser);
             log.info("createUser done");
             return createdUser;
         } catch (Exception exception) {
@@ -86,18 +67,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-
+    @Transactional
+    public void updateUser(UUID id, UserDto userDto) {
+        User userForUpdate = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("user not found with id " + id));
+        userForUpdate.setUsername(userDto.getUsername());
+        userForUpdate.setEmail(userDto.getEmail());
+        userForUpdate.setFirstName(userDto.getFirstName());
+        userForUpdate.setLastName(userDto.getLastName());
     }
 
     @Override
     public User getUserByUserName(String username) {
-        return null;
+        return userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("user with username " + username + " is not found"));
     }
 
     @Override
     public User getByEmail(String email) {
-        return null;
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new RuntimeException("user with email " + email + " is not found"));
     }
 
     @Override

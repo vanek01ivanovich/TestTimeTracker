@@ -7,4 +7,6 @@ public interface TaskTypeService {
     TaskType createTaskType(String taskType);
 
     TaskType findTaskTypeByNameOrCreateNew(String name);
+
+    TaskType updateTaskType(TaskType taskType);
 }
